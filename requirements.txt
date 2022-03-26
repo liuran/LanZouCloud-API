@@ -1,0 +1,6 @@
+fire==0.4.0
+requests==2.25.1
+requests_toolbelt==0.9.1
+rich==12.0.1
+setuptools==52.0.0.post20210125
+urllib3==1.26.4

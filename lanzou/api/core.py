@@ -508,10 +508,14 @@ class LanZouCloud(object):
                                   pwd=pwd, url=share_url)
             first_page = remove_notes(first_page.text)
             # 一般情况 sign 的值就在 data 里，有时放在变量后面
+            signs = re.search(r"ajaxdata = '(.+?)'", first_page).group(1)
+            websign = re.search(r"websign = '(.+?)'", first_page).group(1)
+            websignkey = re.search(r"websignkey = '(.+?)'", first_page).group(1)
+
             sign = re.search(r"'sign':(.+?),", first_page).group(1)
             if len(sign) < 20:  # 此时 sign 保存在变量里面, 变量名是 sign 匹配的字符
                 sign = re.search(rf"var {sign}\s*=\s*'(.+?)';", first_page).group(1)
-            post_data = {'action': 'downprocess', 'sign': sign, 'ves': 1}
+            post_data = {'action': 'downprocess', 'sign': sign, 'ves': 1, 'signs':signs,'websign':websign,'websignkey':websignkey}
             link_info = self._post(self._host_url + '/ajaxm.php', post_data)
             if not link_info:
                 return FileDetail(LanZouCloud.NETWORK_ERROR, name=f_name, time=f_time, size=f_size, desc=f_desc,
